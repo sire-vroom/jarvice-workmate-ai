@@ -79,13 +79,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Workplace Jarvice — AI Workplace Assistant" },
+      { title: "Workpal Jarvice — AI Workplace Assistant" },
       { name: "description", content: "Workplace Jarvice: AI-powered email drafting, meeting summaries, task planning, research, and chat — in one workspace." },
       { name: "author", content: "Workplace Jarvice" },
-      { property: "og:title", content: "Workplace Jarvice — AI Workplace Assistant" },
-      { property: "og:description", content: "AI-powered email drafting, meeting summaries, task planning, research, and chat in one workspace." },
+      { property: "og:title", content: "Workpal Jarvice — AI Workplace Assistant" },
+      { property: "og:description", content: "Workplace Jarvice: AI-powered email drafting, meeting summaries, task planning, research, and chat — in one workspace." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "Workpal Jarvice — AI Workplace Assistant" },
+      { name: "twitter:description", content: "Workplace Jarvice: AI-powered email drafting, meeting summaries, task planning, research, and chat — in one workspace." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/23e5db21-fdd8-4723-8603-354a25ed884c/id-preview-47d23d60--3b07bb9c-be51-456e-bb53-ee51487a252d.lovable.app-1782463628875.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/23e5db21-fdd8-4723-8603-354a25ed884c/id-preview-47d23d60--3b07bb9c-be51-456e-bb53-ee51487a252d.lovable.app-1782463628875.png" },
     ],
     links: [
       {
