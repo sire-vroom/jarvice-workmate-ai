@@ -9,6 +9,7 @@ import { ComplianceFooter } from "../compliance-footer";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { Clock } from "lucide-react";
 
 type Task = { id: string; title: string; priority: "High" | "Medium" | "Low"; estimate: string; done: boolean };
 
@@ -123,7 +124,7 @@ export function PlannerView({
                 <span className={cn("rounded-full border px-2 py-0.5 text-[10px] font-medium", PRIO_STYLES[t.priority])}>
                   {t.priority}
                 </span>
-                <span>⏱ {t.estimate}</span>
+                <span className="flex items-center gap-1"><Clock className="h-3 w-3" strokeWidth={1.75} />{t.estimate}</span>
               </div>
             </div>
           </label>
