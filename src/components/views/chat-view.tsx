@@ -2,7 +2,7 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { Send } from "lucide-react";
+import { Send, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ComplianceFooter } from "../compliance-footer";
 import type { ViewId } from "../sidebar";
@@ -61,7 +61,9 @@ export function ChatView({ onJumpView }: { onJumpView: (v: ViewId) => void }) {
           {messages.length === 0 && (
             <div className="grid h-full place-items-center text-center text-sm text-muted-foreground">
               <div>
-                <div className="mb-3 text-4xl">💼</div>
+                <div className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-2xl bg-primary/10 text-primary">
+                  <Sparkles className="h-6 w-6" strokeWidth={1.5} />
+                </div>
                 <div className="font-semibold text-foreground">How can I help you today?</div>
                 <div className="mt-1">Brainstorm, summarize, draft, or plan — all in one place.</div>
               </div>

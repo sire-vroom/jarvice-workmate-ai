@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 import { Sidebar, type ViewId } from "@/components/sidebar";
+import { WorkspaceSelector } from "@/components/workspace-selector";
 import { ChatView } from "@/components/views/chat-view";
 import { EmailView } from "@/components/views/email-view";
 import { SummarizeView } from "@/components/views/summarize-view";
@@ -9,6 +10,7 @@ import { PlannerView } from "@/components/views/planner-view";
 import { ResearchView } from "@/components/views/research-view";
 import type { Task } from "@/components/views/planner-view";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -21,14 +23,7 @@ export const Route = createFileRoute("/")({
 });
 
 type EmailLog = { id: string; ts: string; audience: string; subject: string; hour: string };
-
-const NAV_LABEL: Record<ViewId, string> = {
-  chat: "Chat Assistant",
-  email: "Email Generator",
-  summarize: "Meeting Notes",
-  planner: "Task Planner",
-  research: "Research",
-};
+type Density = "comfortable" | "compact";
 
 function App() {
   const [view, setView] = useState<ViewId>("chat");
@@ -36,23 +31,25 @@ function App() {
   const [emailLog, setEmailLog] = useState<EmailLog[]>([]);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [history, setHistory] = useState<{ id: string; title: string; view: ViewId }[]>([]);
+  const [density, setDensity] = useState<Density>("comfortable");
 
-  // hydrate persisted state
   useEffect(() => {
     try {
       const e = localStorage.getItem("wj-emails");
       const t = localStorage.getItem("wj-tasks");
       const h = localStorage.getItem("wj-history");
+      const d = localStorage.getItem("wj-density") as Density | null;
       if (e) setEmailLog(JSON.parse(e));
       if (t) setTasks(JSON.parse(t));
       if (h) setHistory(JSON.parse(h));
+      if (d === "comfortable" || d === "compact") setDensity(d);
     } catch {}
   }, []);
   useEffect(() => { try { localStorage.setItem("wj-emails", JSON.stringify(emailLog)); } catch {} }, [emailLog]);
   useEffect(() => { try { localStorage.setItem("wj-tasks", JSON.stringify(tasks)); } catch {} }, [tasks]);
   useEffect(() => { try { localStorage.setItem("wj-history", JSON.stringify(history)); } catch {} }, [history]);
+  useEffect(() => { try { localStorage.setItem("wj-density", density); } catch {} }, [density]);
 
-  // log latest email to history
   useEffect(() => {
     if (emailLog[0]) {
       setHistory((prev) => {
@@ -65,20 +62,28 @@ function App() {
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background text-foreground">
-      <Sidebar view={view} setView={setView} open={sidebarOpen} history={history} />
+      <Sidebar
+        view={view}
+        setView={setView}
+        open={sidebarOpen}
+        history={history}
+        onClearHistory={() => setHistory([])}
+        density={density}
+        setDensity={setDensity}
+      />
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card/50 px-4 backdrop-blur">
           <Button variant="ghost" size="icon" onClick={() => setSidebarOpen((o) => !o)} aria-label="Toggle sidebar">
-            <Menu className="h-5 w-5" />
+            <Menu className="h-5 w-5" strokeWidth={1.75} />
           </Button>
-          <div className="min-w-0">
-            <div className="text-sm font-semibold">{NAV_LABEL[view]}</div>
-            <div className="text-[11px] text-muted-foreground">Workplace Jarvice · serverless workspace</div>
+          <WorkspaceSelector view={view} setView={setView} />
+          <div className="ml-auto text-[11px] text-muted-foreground">
+            Workplace Jarvice · serverless workspace
           </div>
         </header>
 
-        <main className="min-h-0 flex-1 overflow-y-auto px-6 py-6">
+        <main className={cn("min-h-0 flex-1 overflow-y-auto", density === "compact" ? "px-4 py-4" : "px-6 py-6")}>
           <div className="mx-auto max-w-6xl">
             {view === "chat" && <ChatView onJumpView={setView} />}
             {view === "email" && <EmailView log={emailLog} setLog={setEmailLog} />}
